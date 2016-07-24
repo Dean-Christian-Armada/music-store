@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 from unittest import skip # This library is used to skip some class TestCase
 
-from . models import *
+from store.models import *
  
 import time # This library is used in case you want to put a sleep before proceeding to the next line of scripts
 import inspect # This library is used to print the method of that certain class.. inspect.stack()[0][3]
@@ -124,5 +124,3 @@ class ArtistTestErrors(_cls, APITestCase):
 		x = _cls._setup_add_record(self)
 		response = self.client.delete(url_3)
 		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-
