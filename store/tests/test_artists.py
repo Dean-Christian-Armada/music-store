@@ -6,7 +6,7 @@ from rest_framework.test import APITestCase
 
 from unittest import skip # This library is used to skip some class TestCase
 
-from store.models import *
+from store.models import Artist
  
 import time # This library is used in case you want to put a sleep before proceeding to the next line of scripts
 import inspect # This library is used to print the method of that certain class.. inspect.stack()[0][3]
@@ -15,7 +15,7 @@ import json # This library is for parsing the response.content
 # Create your tests here.
 
 url_1 = reverse('artists-list') # The URL endpoint for the artists which is /artists/ having POST and GET methods
-url_2 = reverse('artists-detail', kwargs={'artist_id':1}) # The URL endpoint for the artists which is /artists/:d having GET, PUT and DELETE methods
+url_2 = reverse('artists-detail', kwargs={'artist_id':1}) # The URL endpoint for the artists which is /artists/:id having GET, PUT and DELETE methods
 url_3 = reverse('artists-detail', kwargs={'artist_id':3}) # Wrong id endpoint on purpose to check error response
 
 # Reusabality Class
@@ -106,7 +106,7 @@ class ArtistTestErrors(_cls, APITestCase):
 
 	# User tries to request a GET method on a non-existing id
 	def test_get_detail(self):
-		_cls._setup_add_record(self)
+		x = _cls._setup_add_record(self)
 		response = self.client.get(url_3)
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 

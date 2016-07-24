@@ -1,0 +1,38 @@
+[
+{
+  "model": "store.album",
+  "pk": 1,
+  "fields": {
+    "artist": 4,
+    "name": "A Sample Album",
+    "description": "A Simple Description"
+  }
+},
+{
+  "model": "store.album",
+  "pk": 2,
+  "fields": {
+    "artist": 3,
+    "name": "A Sample Album 2",
+    "description": "A Simple Description"
+  }
+},
+{
+  "model": "store.album",
+  "pk": 3,
+  "fields": {
+    "artist": 3,
+    "name": "A Sample Album 3",
+    "description": "A Simple Description"
+  }
+},
+{
+  "model": "store.album",
+  "pk": 4,
+  "fields": {
+    "artist": 3,
+    "name": "A Sample Album 4",
+    "description": "A Simple Description 4"
+  }
+}
+]

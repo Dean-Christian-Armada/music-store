@@ -18,6 +18,9 @@ class Album(models.Model):
 	name = models.CharField(max_length=50)
 	description = models.TextField() 
 
+	def get_absolute_url(self):
+		return reverse('albums-detail', kwargs={'artist_id':self.artist.id, 'album_id':self.id})
+
 class Song(models.Model):
 	album = models.ForeignKey(Album)
 	name = models.CharField(max_length=50)
