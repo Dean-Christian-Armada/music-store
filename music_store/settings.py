@@ -50,13 +50,15 @@ INSTALLED_APPS = [
     'oauth2_provider', # Oauth2 library especially made for django with django rest framework integration
     'rest_framework_docs', # Library for creating API Documentation
     'markdown',
+    # 'devserver', # This is used to check the operation performance done on the backend
     # END third-party packages app
 
 ]
 
 MIDDLEWARE_CLASSES = [
-    'django.middleware.security.SecurityMiddleware',
     # 'oauth2_provider.middleware.CorsMiddleware', # To let the allowed_uris be the CORSHeader whitelist
+    # 'devserver.middleware.DevServerMiddleware',  # Middleware for the devserver
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,6 +67,21 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Extra DEVSERVER logging
+# DEVSERVER_MODULES = (
+#     'devserver.modules.sql.SQLRealTimeModule',
+#     'devserver.modules.sql.SQLSummaryModule',
+#     'devserver.modules.profile.ProfileSummaryModule',
+
+#     # Modules not enabled by default
+#     'devserver.modules.ajax.AjaxDumpModule',
+#     'devserver.modules.profile.MemoryUseModule',
+#     'devserver.modules.cache.CacheSummaryModule',
+#     'devserver.modules.profile.LineProfilerModule',
+# )
+
+# DEVSERVER_AUTO_PROFILE = True # profiles all views without the need of function decorator
 
 ROOT_URLCONF = 'music_store.urls'
 
@@ -138,12 +155,12 @@ STATIC_URL = '/static/'
 
 # START Django Rest Framework settings
 REST_FRAMEWORK = {
-    # 'DEFAULT_PERMISSION_CLASSES': (
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ),
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'oauth2_provider.ext.rest_framework.OAuth2Authentication',
-    # ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    ),
     # Disables the Admin UI of the Django Rest Framework
     # Source: http://stackoverflow.com/questions/11898065/how-to-disable-admin-style-browsable-interface-of-django-rest-framework
     # 'DEFAULT_RENDERER_CLASSES': (

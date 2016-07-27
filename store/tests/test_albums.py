@@ -6,9 +6,11 @@ from rest_framework.test import APITestCase
 
 from unittest import skip # This library is used to skip some class TestCase
 
+from core.tests import OauthAccessToken
 from store.models import Album
 
 from . test_artists import ArtistRecordSetupMixing
+from . test_artists import ArtistTestWithData
  
 import time # This library is used in case you want to put a sleep before proceeding to the next line of scripts
 import inspect # This library is used to print the method of that certain class.. inspect.stack()[0][3]
@@ -21,11 +23,12 @@ url_2 = reverse('albums-filtered-by-artist',  kwargs={'artist_id':1}) # The URL 
 url_3 = reverse('albums-detail', kwargs={'artist_id':1,'album_id':1}) # The URL endpoint for the albums which is /artists/:id/albums/:id having GET, PUT and DELETE methods
 url_4 = reverse('albums-detail', kwargs={'artist_id':1,'album_id':3}) # Wrong id endpoint on purpose to check error response
 
-# Reusabality Class
+# Reusabality ClassOauthAccessToken
 class AlbumRecordSetupMixing(ArtistRecordSetupMixing):
 	# For reusable of adding a single record
 	# To be used for POST, GET(detailed), PUT and DELETE
 	def _setup_add_record(self):
+		OauthAccessToken.setUp(self) # This is declared to insert the Oauth without interrupting anything from the children classes
 		ArtistRecordSetupMixing._setup_add_record(self)
 		_data = {"name": "Album 1", "description":"A Sample Album"}
 		response = self.client.post(url_2, _data)
@@ -36,12 +39,14 @@ class AlbumRecordSetupMixing(ArtistRecordSetupMixing):
 _cls = AlbumRecordSetupMixing # Variable for the re-usable class
 
 # Check the response if there is no given data
-class AlbumTestWithData(APITestCase):
+class AlbumTestWithData(OauthAccessToken):
 	# indent is just used to specify the tab size
 	# follow the json naming format
-	# Command: python manage.py dumpdata store.artist --indent=2 > store/fixtures/artists_2016_07_23.json
+	# artist is required because it is a foreign key of the albums
 	# Command: python manage.py dumpdata store.album --indent=2 > store/fixtures/albums_2016_07_24.json
-	fixtures = ['artists_2016_07_23.json', 'albums_2016_07_24.json']
+	fixtures = list(ArtistTestWithData.fixtures) # "list" is needed so the addressing of fixtures is different
+	fixtures.append('albums_2016_07_24.json')
+	# fixtures = ['artists_2016_07_23.json', 'albums_2016_07_24.json']
 	
 	# Check the response if there is a data within
 	def test_get(self):
@@ -54,7 +59,7 @@ class AlbumTestWithData(APITestCase):
 		# print ("%s.%s DONE - 1" % (self.__class__.__name__, inspect.stack()[0][3]))
 
 # Check the response if there is no given data
-class AlbumTest(APITestCase, _cls):
+class AlbumTest(OauthAccessToken, _cls):
 	# Checks the records
 	def test_get(self):
 		# self.client attribute will be an APIClient instance
@@ -112,7 +117,7 @@ class AlbumTest(APITestCase, _cls):
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 # Check the response if there is error on requests
-class AlbumTestErrors(_cls, APITestCase):
+class AlbumTestErrors(_cls, OauthAccessToken):
 	# User tries to request a POST method without a "name"
 	def test_post(self):
 		_data = {"description":"A Sample Album 6"}

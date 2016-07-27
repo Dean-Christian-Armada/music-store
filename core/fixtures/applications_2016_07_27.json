@@ -1,0 +1,30 @@
+[
+{
+  "model": "oauth2_provider.application",
+  "pk": 1,
+  "fields": {
+    "client_id": "p3VBvgUpUuydC8yuprjNB64FJyPvCxeJRSePj0EM",
+    "user": 1,
+    "redirect_uris": "",
+    "client_type": "confidential",
+    "authorization_grant_type": "password",
+    "client_secret": "mP2AtzuI672C3AX6TqIqUhlbDrFZtVwAWBANR1NZ8wUGTr8V4ivFJwQU2mnrUMA6y6RCDZHZcqsZ1WoZG632YoaFi8kfk047Xwcw8zg1pv0SdHWbktegRWPfWNJzsdbN",
+    "name": "ARC",
+    "skip_authorization": false
+  }
+},
+{
+  "model": "oauth2_provider.application",
+  "pk": 2,
+  "fields": {
+    "client_id": "kRAsJYiXGsNrxQlgRPpKn95oQQlWVpes1s8zmjuY",
+    "user": 2,
+    "redirect_uris": "http://127.0.0.1:8001/",
+    "client_type": "confidential",
+    "authorization_grant_type": "password",
+    "client_secret": "udiGpkhtspiicZ3Q3vfGNRgDptxl01IGjkINQzgCBoElkmmLvT6T3oi2HeQR9OWWlm20rgjN9WQOGO5srekztXw6xZ5J0wWzaMbIAcI1iTbQlSc7qkbFKIuOW47UUgUZ",
+    "name": "ARC",
+    "skip_authorization": false
+  }
+}
+]

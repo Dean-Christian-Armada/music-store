@@ -1,0 +1,38 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$4Y3Ze8EOwDW7$eo2VZdzEEQ//Eb1D61Nk2WsmdOW9jt/xYfQ7AbB2aVU=",
+    "last_login": "2016-07-27T03:55:09.160Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "adgc.manship@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2016-07-23T07:07:55.548Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$24000$BRCJT0aHns7X$i8utrFiX47JX2Cr6gdsPFamSBfA6h283Y35P0EuHSkM=",
+    "last_login": "2016-07-27T03:54:57.183Z",
+    "is_superuser": false,
+    "username": "dean",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2016-07-26T11:37:41Z",
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]

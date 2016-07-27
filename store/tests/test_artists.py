@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 
 from unittest import skip # This library is used to skip some class TestCase
 
+from core.tests import OauthAccessToken
 from store.models import Artist
  
 import time # This library is used in case you want to put a sleep before proceeding to the next line of scripts
@@ -23,6 +24,7 @@ class ArtistRecordSetupMixing():
 	# For reusable of adding a single record
 	# To be used for POST, GET(detailed), PUT and DELETE
 	def _setup_add_record(self):
+		OauthAccessToken.setUp(self) # This is declared to insert the Oauth without interrupting anything from the children classes
 		_data = {"name": "50 Cent", "birth_date":"2005-02-13"}
 		response = self.client.post(url_1, _data)
 		data = json.loads(response.content)["data"]
@@ -31,11 +33,13 @@ class ArtistRecordSetupMixing():
 _cls = ArtistRecordSetupMixing # Variable for the re-usable class
 
 # Check the response if there is no given data
-class ArtistTestWithData(APITestCase):
+class ArtistTestWithData(OauthAccessToken):
 	# indent is just used to specify the tab size
 	# follow the json naming format
 	# Command: python manage.py dumpdata store.artist --indent=2 > store/fixtures/artists_2016_07_23.json
-	fixtures = ['artists_2016_07_23.json']
+	fixtures = list(OauthAccessToken.fixtures) # "list" is needed so the addressing of fixtures is different
+	fixtures.append('artists_2016_07_23.json')
+	# fixtures = ['users_2016_07_27.json', 'applications_2016_07_27.json', 'artists_2016_07_23.json']
 	
 	# Check the response if there is a data within
 	def test_get(self):
@@ -48,7 +52,7 @@ class ArtistTestWithData(APITestCase):
 		# print ("%s.%s DONE - 1" % (self.__class__.__name__, inspect.stack()[0][3]))
 
 # Check the response if there is no given data
-class ArtistTest(APITestCase, _cls):
+class ArtistTest(OauthAccessToken, _cls):
 	# Checks the records
 	def test_get(self):
 		# self.client attribute will be an APIClient instance
@@ -96,7 +100,7 @@ class ArtistTest(APITestCase, _cls):
 		self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
 # Check the response if there is error on requests
-class ArtistTestErrors(_cls, APITestCase):
+class ArtistTestErrors(_cls, OauthAccessToken):
 	# User tries to request a POST method without a "name"
 	def test_post(self):
 		_data = {"birth_date":"2005-02-13"}
