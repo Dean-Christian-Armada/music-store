@@ -68,10 +68,12 @@ class AlbumTest(APITestCase, _cls):
 	# Creates the record
 	def test_post(self):
 		x = _cls._setup_add_record(self)
-		self.assertEqual(x[0].status_code, status.HTTP_201_CREATED) # Status 201 is the default when a new object is created 
-		self.assertEqual(x[2], x[1]) # have the API return the updated (or created) representation as part of the response
+		self.assertEqual(x[0].status_code, status.HTTP_201_CREATED) # Status 201 is the default when a new object is created
+		self.assertIn("artist_detail", x[2]) # Just make sure that a certain key is included
+		# self.assertIn("Dean", "Dean Armada") # have the API return the updated (or created) representation as part of the response
 		self.assertEqual(Album.objects.count(), 1) # Make  sure that there is a craeted instance
 		self.assertEqual(Album.objects.get().name, 'Album 1') # Double checking if the last post is the created instance
+		self.assertEqual(x[0]["Location"], Album.objects.get().get_absolute_url())
 
 	# Get a specific record
 	def test_get_detail(self):

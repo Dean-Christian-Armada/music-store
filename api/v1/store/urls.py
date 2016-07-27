@@ -1,7 +1,7 @@
 from django.conf.urls import url, include
 
-from store.views import views_artists as va
-from store.views import views_albums as va_2
+from store.views.v1 import views_artists as va
+from store.views.v1 import views_albums as va_2
 
 urlpatterns = [
 	# START Artists URLS

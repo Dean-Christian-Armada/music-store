@@ -66,6 +66,7 @@ class ArtistTest(APITestCase, _cls):
 		self.assertEqual(x[2], x[1]) # have the API return the updated (or created) representation as part of the response
 		self.assertEqual(Artist.objects.count(), 1) # Make  sure that there is a craeted instance
 		self.assertEqual(Artist.objects.get().name, '50 Cent') # Double checking if the last post is the created instance
+		self.assertEqual(x[0]["Location"], Artist.objects.get().get_absolute_url())
 
 	# Get a specific record
 	def test_get_detail(self):

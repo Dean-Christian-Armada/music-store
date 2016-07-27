@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.db import models
 
-# from django_elasticsearch.models import EsIndexable
+from django_elasticsearch.models import EsIndexable
 
 # Create your models here.
-class Artist(models.Model):
+class Artist(EsIndexable, models.Model):
 	name = models.CharField(max_length=50)
 	birth_date = models.DateField()
 
@@ -15,7 +15,10 @@ class Artist(models.Model):
 	def get_absolute_url(self):
 		return reverse('artists-detail', kwargs={'artist_id':self.id})
 
-class Album(models.Model):
+	def __unicode__(self):
+		return self.name
+
+class Album(EsIndexable, models.Model):
 	artist = models.ForeignKey(Artist)
 	name = models.CharField(max_length=50)
 	description = models.TextField() 
@@ -23,7 +26,10 @@ class Album(models.Model):
 	def get_absolute_url(self):
 		return reverse('albums-detail', kwargs={'artist_id':self.artist.id, 'album_id':self.id})
 
-class Song(models.Model):
+	def __unicode__(self):
+		return self.name
+
+class Song(EsIndexable, models.Model):
 	album = models.ForeignKey(Album)
 	name = models.CharField(max_length=50)
 	duration = models.DurationField()

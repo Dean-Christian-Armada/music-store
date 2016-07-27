@@ -37,8 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # START django manage.py built apps
+    # START manually built apps
+    'core',
     'api',
+    # END manually built apps
+    # START django manage.py built apps
     'store',
     'dashboard',
     # END django manage.py built apps
@@ -53,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
+    # 'oauth2_provider.middleware.CorsMiddleware', # To let the allowed_uris be the CORSHeader whitelist
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -133,28 +137,34 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # START Django Rest Framework settings
-# REST_FRAMEWORK = {
-#     'DEFAULT_PERMISSION_CLASSES': (
-#         'rest_framework.permissions.IsAuthenticated',
-#     ),
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'oauth2_provider.ext.rest_framework.OAuth2Authentication',
-#     ),
-#     # Disables the Admin UI of the Django Rest Framework
-#     # Source: http://stackoverflow.com/questions/11898065/how-to-disable-admin-style-browsable-interface-of-django-rest-framework
-#     'DEFAULT_RENDERER_CLASSES': (
-#         'rest_framework.renderers.JSONRenderer',
-#     )
-# }
+REST_FRAMEWORK = {
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    # ),
+    # Disables the Admin UI of the Django Rest Framework
+    # Source: http://stackoverflow.com/questions/11898065/how-to-disable-admin-style-browsable-interface-of-django-rest-framework
+    # 'DEFAULT_RENDERER_CLASSES': (
+    #     'rest_framework.renderers.JSONRenderer',
+    # )
+}
 # END Django Rest Framework settings
 
-# START Additional Django Settings
-FIXTURE_DIRS = {
-    os.path.join(BASE_DIR, 'fixtures')
-}
-# END Additional Django Settings
+# ELASTICSEARCH_AUTO_INDEX = 1
 
-# START Custom Global Methods Settings
-def standardResponse(data=[], errors=[], **kwargs):
-    return {"data":data, "errors":errors}
-# END Custom Global Methods Settings
+# # START Custom Global Methods Settings
+# def standardResponse(data=[], errors=[], **kwargs):
+#     return {"data":data, "errors":errors}
+
+# def pagination(page):
+#     if page:
+#         page = int(page)
+#         items_per_page = 5
+#         offset = (page - 1) * items_per_page
+#         limit = page * items_per_page
+#         return ( offset, limit )
+#     else:
+#         return False
+# # END Custom Global Methods Settings
