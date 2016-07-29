@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from django.conf.urls import url, include
 
 from store.views.v1 import views_artists as va
@@ -5,7 +6,7 @@ from store.views.v1 import views_albums as va_2
 
 urlpatterns = [
 	# START Artists URLS
- 	url(r'^artists/$', va.artist, name='artists-list'),
+ 	url(r'^artists/$', cache_page(60*1, key_prefix='artists')(va.artist), name='artists-list'),
  	url(r'^artists/(?P<artist_id>[0-9]+)/$', va.artist_detail, name='artists-detail'),
  	# END Artists URLS
  	# START Album URLS

@@ -18,6 +18,11 @@ class Artist(EsIndexable, models.Model):
 	def __unicode__(self):
 		return self.name
 
+	def save(self, *args, **kwargs):
+		from django.core.cache import cache
+		cache.delete('artists')
+		super(Artist, self).save(*args, **kwargs)
+
 class Album(EsIndexable, models.Model):
 	artist = models.ForeignKey(Artist)
 	name = models.CharField(max_length=50)

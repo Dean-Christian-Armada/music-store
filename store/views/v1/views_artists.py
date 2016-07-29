@@ -1,3 +1,4 @@
+from django.views.decorators.cache import cache_page
 from django.shortcuts import render
 from django.core.signals import request_started, request_finished
 
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from core.methods import standardResponse, pagination
+from core.classes import CacheMixin
 
 from api.v1.store.serializers import *
 
@@ -15,6 +17,7 @@ import time
 
 # Create your views here.
 # An Example of Measuring the requests speed
+# @cache_page(60 * 1)
 class ArtistsList(APIView):
 	"""
 **GET** - lists all the artists
@@ -24,6 +27,7 @@ class ArtistsList(APIView):
 	serializer_class = ArtistSerializer # serializer_class is important to automatically show fields on DRF docs
 
 	def get(self, request, *args, **kwargs):
+		print "dean"
 		global serializer_time
 		global db_time
 
@@ -53,38 +57,39 @@ class ArtistsList(APIView):
 		else:
 			return Response(standardResponse(errors=serializer.errors), status=status.HTTP_400_BAD_REQUEST)
 
-	def dispatch(self, request, *args, **kwargs):
-		global dispatch_time
-		global render_time
+	# THESE ARE CONFLICTED WHEN RUNNING AUTOMATION TESTS
+	# def dispatch(self, request, *args, **kwargs):
+	# 	global dispatch_time
+	# 	global render_time
 
-		dispatch_start = time.time()
-		ret = super(ArtistsList, self).dispatch(request, *args, **kwargs)
+	# 	dispatch_start = time.time()
+	# 	ret = super(ArtistsList, self).dispatch(request, *args, **kwargs)
 
-		render_start = time.time()
-		ret.render()
-		render_time = time.time() - render_start
+	# 	render_start = time.time()
+	# 	ret.render()
+	# 	render_time = time.time() - render_start
 
-		dispatch_time = time.time() - dispatch_start
+	# 	dispatch_time = time.time() - dispatch_start
 
-		return ret
+	# 	return ret
 
-	def started(sender, **kwargs):
-		global started
-		started = time.time()
+	# def started(sender, **kwargs):
+	# 	global started
+	# 	started = time.time()
 
-	def finished(sender, **kwargs):
-		total = time.time() - started
-		api_view_time = dispatch_time - (render_time + serializer_time + db_time)
-		request_response_time = total - dispatch_time
+	# def finished(sender, **kwargs):
+	# 	total = time.time() - started
+	# 	api_view_time = dispatch_time - (render_time + serializer_time + db_time)
+	# 	request_response_time = total - dispatch_time
 
-		print ("Database lookup               | %.4fs" % db_time)
-		print ("Serialization                 | %.4fs" % serializer_time)
-		print ("Django request/response       | %.4fs" % request_response_time)
-		print ("API view                      | %.4fs" % api_view_time)
-		print ("Response rendering            | %.4fs" % render_time)
+	# 	print ("Database lookup               | %.4fs" % db_time)
+	# 	print ("Serialization                 | %.4fs" % serializer_time)
+	# 	print ("Django request/response       | %.4fs" % request_response_time)
+	# 	print ("API view                      | %.4fs" % api_view_time)
+	# 	print ("Response rendering            | %.4fs" % render_time)
 
-	request_started.connect(started)
-	request_finished.connect(finished)
+	# request_started.connect(started)
+	# request_finished.connect(finished)
 
 artist = ArtistsList.as_view()
 

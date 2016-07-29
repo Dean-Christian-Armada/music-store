@@ -68,6 +68,13 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': '/Users/deanarmada/Desktop/projects/python-projects/music_store/cache',
+    }
+}
+
 # Extra DEVSERVER logging
 # DEVSERVER_MODULES = (
 #     'devserver.modules.sql.SQLRealTimeModule',
@@ -141,11 +148,16 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False # Set to False to import optimizations
 
-USE_L10N = True
+USE_L10N = False
 
-USE_TZ = True
+USE_TZ = False
+
+# Source: fideloper.com/api-etag-conditional-get
+# Use "If-None-Match" header with Etag
+# Work with client on this carefully
+USE_ETAGS = True # For cacheing mechanism
 
 
 # Static files (CSS, JavaScript, Images)
@@ -169,7 +181,11 @@ REST_FRAMEWORK = {
 }
 # END Django Rest Framework settings
 
-# ELASTICSEARCH_AUTO_INDEX = 1
+
+
+ACCESS_TOKEN_EXPIRE_SECONDS = 7776000 # 3 months
+
+# ELASTICSEARCH_AUTO_INDEX = 1 # Automatically creates index on newly saved record
 
 # # START Custom Global Methods Settings
 # def standardResponse(data=[], errors=[], **kwargs):
