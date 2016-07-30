@@ -10,8 +10,10 @@ class Command(BaseCommand):
 	def add_arguments(self, parser):
 		parser.add_argument('count', nargs=1, type=int)
 	def handle(self, *args, **options):
+		self.clear()
 		self.make_artists()
 		self.make_albums(options)
+		self.make_songs(options)
 	# def make_artists(self, options):
 	def make_artists(self):
 		import radar
@@ -21,7 +23,7 @@ class Command(BaseCommand):
 		radar.random_datetime(
 		    start = datetime.datetime(year=1980, month=1, day=1),
 		    stop = datetime.datetime(year=2000, month=1, day=1)
-		)
+  		)
 		_artists = ("Justin Bieber", "Anne Curtis", "Eminem", "Tupac", "Loonie")
 		self.artists = []
 		for name in _artists:
@@ -42,3 +44,23 @@ class Command(BaseCommand):
 			)
 			self.albums.append(album)
 		Album.objects.bulk_create(self.albums)
+
+	def make_songs(self, options):
+		import names
+		from random import randint
+		self.songs = []
+		for x in range(0, options.get('count')[0]*10):
+			song = mommy.prepare(
+				Song,
+				album = random.choice(self.albums),
+				name=names.get_full_name(),
+				duration="%s:%s" % (randint(0, 5), randint(0, 59)),
+				ratings=randint(0, 9),
+			)
+			self.songs.append(song)
+		Song.objects.bulk_create(self.songs)
+
+	def clear(self):
+		Artist.objects.all().delete()
+		Album.objects.all().delete()
+		Song.objects.all().delete()

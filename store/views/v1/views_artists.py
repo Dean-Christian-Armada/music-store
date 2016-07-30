@@ -1,6 +1,7 @@
 from django.views.decorators.cache import cache_page
 from django.shortcuts import render
 from django.core.signals import request_started, request_finished
+from django.core.cache import cache
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,25 +28,30 @@ class ArtistsList(APIView):
 	serializer_class = ArtistSerializer # serializer_class is important to automatically show fields on DRF docs
 
 	def get(self, request, *args, **kwargs):
-		print "dean"
-		global serializer_time
-		global db_time
+		# global serializer_time
+		# global db_time
 
 		page = request.GET.get('page', None)
-		db_start = time.time()
-		_array = Artist.objects.filter()
-		db_time = time.time() - db_start
+		# db_start = time.time()
+		c = 'artists'
+		if cache.get(c):
+			_array = cache.get(c)
+		else:
+			_array = Artist.objects.filter()
+			cache.set(c, _array)
+		# db_time = time.time() - db_start
 		if page:
 			x = pagination(page)
 			_array = _array[x[0]:x[1]]
-		serializer_start = time.time()
+		# serializer_start = time.time()
 		serializer = self.serializer_class(_array, many=True)
-		if serializer.data:
+		data = serializer.data
+		if data:
 			_status = status.HTTP_200_OK
 		else:
 			_status = status.HTTP_204_NO_CONTENT
-		serializer_time = time.time() - serializer_start
-		return Response(standardResponse(data=serializer.data), status=_status)
+		# serializer_time = time.time() - serializer_start
+		return Response(standardResponse(data=data), status=_status)
 
 	def post(self, request, *args, **kwargs):
 		serializer = self.serializer_class(data=request.data)

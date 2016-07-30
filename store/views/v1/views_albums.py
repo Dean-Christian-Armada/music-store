@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from core.methods import standardResponse
+from core.methods import standardResponse, pagination
 
 from api.v1.store.serializers import *
 
@@ -18,16 +18,30 @@ class AlbumsList(APIView):
 
 	def get(self, request, *args, **kwargs):
 		page = request.GET.get('page', None)
-		_array = Album.objects.filter()
+		c = 'albums'
+		if cache.get(c):
+			_array = cache.get(c)
+		else:
+			_array = Album.objects.filter()
+			cache.set(c, _array)
 		if page:
 			x = pagination(page)
 			_array = _array[x[0]:x[1]]
-		serializer = self.serializer_class(_array, many=True)
-		if serializer.data:
+		cs = 'albumserializer'
+		if cache.get(cs):
+			# print cache.get(cs)
+			data = cache.get(cs)
+			if page:
+				data  = data[x[0]:x[1]]
+		else:
+			serializer = self.serializer_class(_array, many=True)
+			data = serializer.data
+			cache.set(cs, data)
+		if data:
 			_status = status.HTTP_200_OK
 		else:
 			_status = status.HTTP_204_NO_CONTENT
-		return Response(standardResponse(data=serializer.data), status=_status)
+		return Response(standardResponse(data=data), status=_status)
 album = AlbumsList.as_view()
 
 class AlbumsFilteredByArtist(APIView):

@@ -50,14 +50,14 @@ INSTALLED_APPS = [
     'oauth2_provider', # Oauth2 library especially made for django with django rest framework integration
     'rest_framework_docs', # Library for creating API Documentation
     'markdown',
-    # 'devserver', # This is used to check the operation performance done on the backend
+    'devserver', # This is used to check the operation performance done on the backend
     # END third-party packages app
 
 ]
 
 MIDDLEWARE_CLASSES = [
     # 'oauth2_provider.middleware.CorsMiddleware', # To let the allowed_uris be the CORSHeader whitelist
-    # 'devserver.middleware.DevServerMiddleware',  # Middleware for the devserver
+    'devserver.middleware.DevServerMiddleware',  # Middleware for the devserver
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -68,25 +68,34 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+#         'LOCATION': '/Users/deanarmada/Desktop/projects/python-projects/music_store/cache',
+#     }
+# }
+
+# Source: http://stackoverflow.com/questions/7636108/installing-memcached-for-a-django-project
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/Users/deanarmada/Desktop/projects/python-projects/music_store/cache',
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+        'TIMEOUT': 60,
     }
 }
 
 # Extra DEVSERVER logging
-# DEVSERVER_MODULES = (
-#     'devserver.modules.sql.SQLRealTimeModule',
-#     'devserver.modules.sql.SQLSummaryModule',
-#     'devserver.modules.profile.ProfileSummaryModule',
+DEVSERVER_MODULES = (
+    'devserver.modules.sql.SQLRealTimeModule',
+    'devserver.modules.sql.SQLSummaryModule',
+    'devserver.modules.profile.ProfileSummaryModule',
 
-#     # Modules not enabled by default
-#     'devserver.modules.ajax.AjaxDumpModule',
-#     'devserver.modules.profile.MemoryUseModule',
-#     'devserver.modules.cache.CacheSummaryModule',
-#     'devserver.modules.profile.LineProfilerModule',
-# )
+    # Modules not enabled by default
+    'devserver.modules.ajax.AjaxDumpModule',
+    'devserver.modules.profile.MemoryUseModule',
+    'devserver.modules.cache.CacheSummaryModule',
+    'devserver.modules.profile.LineProfilerModule',
+)
 
 # DEVSERVER_AUTO_PROFILE = True # profiles all views without the need of function decorator
 
@@ -182,8 +191,9 @@ REST_FRAMEWORK = {
 # END Django Rest Framework settings
 
 
-
-ACCESS_TOKEN_EXPIRE_SECONDS = 7776000 # 3 months
+OAUTH2_PROVIDER = {
+    "ACCESS_TOKEN_EXPIRE_SECONDS": 7776000 # 3 months
+}
 
 # ELASTICSEARCH_AUTO_INDEX = 1 # Automatically creates index on newly saved record
 
