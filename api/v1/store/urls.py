@@ -3,6 +3,7 @@ from django.conf.urls import url, include
 
 from store.views.v1 import views_artists as va
 from store.views.v1 import views_albums as va_2
+from store.views.v1 import views_songs
 
 urlpatterns = [
 	# START Artists URLS
@@ -16,6 +17,7 @@ urlpatterns = [
  	url(r'^artists/(?P<artist_id>[0-9]+)/albums/(?P<album_id>[0-9]+)', va_2.album_detail, name='albums-detail'),
  	# END Album URLS
  	# START Song URLS
+ 	url(r'^songs/$', views_songs.song, name='songs-list'),
  	# url(r'^artists/(?P<artist_id>[0-9]+)/albums/(?P<album_id>[0-9]+)/songs/', views.song, name='songs'),
  	# url(r'^artists/(?P<artist_id>[0-9]+)/albums/(?P<album_id>[0-9]+)/songs/(?P<song_id>[0-9]+)/', views.song_detail, name='songs-detail'),
  	# END Song URLS

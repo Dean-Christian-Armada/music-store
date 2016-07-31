@@ -36,25 +36,26 @@ class Command(BaseCommand):
 		import random
 		self.albums = []
 		for x in range(0, options.get('count')[0]):
-			album = mommy.prepare(
+			album = mommy.make(
 				Album,
 				artist=random.choice(self.artists),
 				name=names.get_first_name(),
 				description="Sample Description",
 			)
 			self.albums.append(album)
-		Album.objects.bulk_create(self.albums)
+		# Album.objects.bulk_create(self.albums)
 
 	def make_songs(self, options):
 		import names
-		from random import randint
+		from random import randint, choice
+		from datetime import timedelta
 		self.songs = []
 		for x in range(0, options.get('count')[0]*10):
 			song = mommy.prepare(
 				Song,
-				album = random.choice(self.albums),
+				album = choice(self.albums),
 				name=names.get_full_name(),
-				duration="%s:%s" % (randint(0, 5), randint(0, 59)),
+				duration=timedelta(minutes=randint(0, 5), seconds=randint(0, 59)),
 				ratings=randint(0, 9),
 			)
 			self.songs.append(song)

@@ -46,6 +46,12 @@ class Album(EsIndexable, models.Model):
 	def __unicode__(self):
 		return self.name
 
+	def artist_details_dict(self):
+		_id = self.artist.id
+		name = self.artist.name
+		birth_date = self.artist.birth_date
+		return {"id":_id, "name":name, "birth_date": birth_date}
+
 # Example of post_save
 def recache_album(sender, **kwargs):
 	cache.delete('albums')
@@ -57,3 +63,16 @@ class Song(EsIndexable, models.Model):
 	name = models.CharField(max_length=50)
 	duration = models.DurationField()
 	ratings = models.IntegerField()
+
+	def __unicode__(self):
+		return self.name
+
+	def album_details_dict(self):
+		_id = self.album.id
+		name = self.album.name
+		desc = self.album.description
+		artist_id = self.album.artist.id
+		artist_name = self.album.artist.name
+		artist_birth_date = self.album.artist.birth_date
+		artist_details = {"id":artist_id, "name":artist_name, "birth_date":artist_birth_date}
+		return {"id":_id, "name":name, "description": desc, "artist_id":artist_id, "artist_details":artist_details}

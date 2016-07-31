@@ -1,4 +1,4 @@
-from django.views.decorators.cache import cache_page
+# from django.views.decorators.cache import cache_page
 from django.shortcuts import render
 from django.core.signals import request_started, request_finished
 from django.core.cache import cache
@@ -12,7 +12,7 @@ from core.classes import CacheMixin
 
 from api.v1.store.serializers import *
 
-from store.models import *
+from store.models import Artist
 
 import time
 

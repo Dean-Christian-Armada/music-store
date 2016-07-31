@@ -80,22 +80,23 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
-        'TIMEOUT': 60,
+        # 'TIMEOUT': 60,
+        'TIMEOUT': 0,
     }
 }
 
 # Extra DEVSERVER logging
-DEVSERVER_MODULES = (
-    'devserver.modules.sql.SQLRealTimeModule',
-    'devserver.modules.sql.SQLSummaryModule',
-    'devserver.modules.profile.ProfileSummaryModule',
+# DEVSERVER_MODULES = (
+#     'devserver.modules.sql.SQLRealTimeModule',
+#     'devserver.modules.sql.SQLSummaryModule',
+#     'devserver.modules.profile.ProfileSummaryModule',
 
-    # Modules not enabled by default
-    'devserver.modules.ajax.AjaxDumpModule',
-    'devserver.modules.profile.MemoryUseModule',
-    'devserver.modules.cache.CacheSummaryModule',
-    'devserver.modules.profile.LineProfilerModule',
-)
+#     # Modules not enabled by default
+#     'devserver.modules.ajax.AjaxDumpModule',
+#     'devserver.modules.profile.MemoryUseModule',
+#     'devserver.modules.cache.CacheSummaryModule',
+#     'devserver.modules.profile.LineProfilerModule',
+# )
 
 # DEVSERVER_AUTO_PROFILE = True # profiles all views without the need of function decorator
 
@@ -159,9 +160,9 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = False # Set to False to import optimizations
 
-USE_L10N = False
+USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 # Source: fideloper.com/api-etag-conditional-get
 # Use "If-None-Match" header with Etag

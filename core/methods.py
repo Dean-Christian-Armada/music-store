@@ -11,6 +11,9 @@ def pagination(page):
         return ( offset, limit )
     else:
         return False
+
+def request_to_kwargs(_request):
+	return dict( [key, value[0]] for key, value in _request.iteritems() )
 # END Custom Global Methods Settings
 
 # START Stackoverflow Snippet

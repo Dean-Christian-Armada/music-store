@@ -28,7 +28,7 @@ class AlbumsList(APIView):
 			x = pagination(page)
 			_array = _array[x[0]:x[1]]
 		cs = 'albumserializer'
-		if cache.get(cs):
+		if cache.get(cs): # THIS CACHE IS NOT REALLY RECOMMENDED ESPECIALLY IF FILTERS AND SORTING TAKES PLACE
 			# print cache.get(cs)
 			data = cache.get(cs)
 			if page:
