@@ -56,8 +56,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE_CLASSES = [
-    # 'oauth2_provider.middleware.CorsMiddleware', # To let the allowed_uris be the CORSHeader whitelist
-    'devserver.middleware.DevServerMiddleware',  # Middleware for the devserver
+    'oauth2_provider.middleware.CorsMiddleware', # To let the allowed_uris be the CORSHeader whitelist
+    # 'devserver.middleware.DevServerMiddleware',  # Middleware for the devserver
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,8 +80,8 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': '127.0.0.1:11211',
-        # 'TIMEOUT': 60,
-        'TIMEOUT': 0,
+        'TIMEOUT': 60,
+        # 'TIMEOUT': 0,
     }
 }
 
